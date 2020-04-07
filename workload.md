@@ -10,11 +10,17 @@ A Keptn Test Service, e.g: JMeter, Neoload ... should use the workload.yml speci
 
 Here is an overview of the core elements
 **teststrategy**: defines for which test strategy this workload should be executed
+
 **description**: just a logical name for the test
+
 **script**: this section is very tool specific. It can just be a script name or a reference to test project, scenario ...
+
 **properties**: this is a list of properties that should be passed to the executed test
+
 **validations**: (optional) can be used to define when a test is sending a resul=pass vs result=fail, e.g: return fail if the overall failure rate of the test is >50%
+
 **infrastructure**: (optional) some testing tools can provision infrastructure on demand. This is the place to define what test infrastructure is needed
+
 **teststages** (optional) depending on the test you may have a warm-up, ramp-up, actual load test, cool-down phase, ... This allows a user to define what the actual load test phase is as this should be the timeframe used by the lighthouse service when retrieving the SLIs
 
 ## Example of a workload.yml file for JMeter
@@ -37,7 +43,7 @@ workloads:
     infrastructure:
     validations:
       - acceptederrorrate: 1.0
-    teststrages:
+    teststages:
       - ramp_up: 60s
         cool_down: 60s
   - teststrategy: performance_light
@@ -52,7 +58,7 @@ workloads:
         loopcount: 10
         thinktime: 250
         acceptederrorrate: 1.0
-    teststrages:
+    teststages:
       - ramp_up: 60s
         cool_down: 60s        
 ```
@@ -76,9 +82,6 @@ workloads:
       - server_host: $SERVERURL
         server_port: $PORT
         protocol: $PROTOCOL
-        vuser: 100
-        loopcount: 10
-        thinktime: 250
     infrastructure:
       local_LG:
       - name: lg1
@@ -87,26 +90,23 @@ workloads:
         lgs:
         - name: lg1
   - teststrategy: performance_light
-    description: BasicCheck
+    description: PerformanceLight
     script: 
       - repository: https://yourreposistory/project.git
         branch: master
         project:
         - path: /tests/neoload/load_template/load_template.nlp
         - path: /tests/neoload/catalogue_neoload.yaml
-        scenario: BasicCheck
+        scenario: PerformanceLight
     properties:
       - server_host: $SERVERURL
         server_port: $PORT
         protocol: $PROTOCOL
-        vuser: 50
-        loopcount: 10
-        thinktime: 250
     infrastructure:
       local_LG:
       - name: lg1
       populations:
-      - name: BasicCheck
+      - name: PerformanceLight
         lgs:
         - name: lg1            
 ```
